@@ -12,20 +12,19 @@ func TestNewInitialisesCPU(t *testing.T) {
 	if cpu.PC != 0 {
 		t.Errorf("after New, want pc == 0, got %d", cpu.PC)
 	}
-	got := cpu.Memory[0]
+	got := cpu.Mem[0]
 	if got != 0 {
 		t.Errorf("after New, want Memory[0] == 0, got %d", got)
 	}
 }
 
 // Uncomment this test once the previous test passes!
-// func TestNopInstructionIncrementsPC(t *testing.T) {
+// func TestStepIncrementsPC(t *testing.T) {
 // 	t.Parallel()
 // 	cpu := r8.New()
-// 	cpu.Memory[256] = r8.OpNOP
-// 	cpu.PC = 256
+// 	cpu.Mem[0] = 1
 // 	cpu.Step()
-// 	if cpu.PC != 257 {
-// 		t.Errorf("want pc == 257, got %d", cpu.PC)
+// 	if cpu.PC != 1 {
+// 		t.Errorf("want pc == 1, got %d", cpu.PC)
 // 	}
 // }

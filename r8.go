@@ -1,11 +1,9 @@
 // Package r8 emulates a simple CPU called the R8.
 package r8
 
-const OpNOP = 1
-
 type CPU struct {
-	PC     uint16
-	Memory [65536]byte
+	PC     int
+	Mem [256]int
 }
 
 func New() *CPU {
