@@ -6,7 +6,7 @@ import (
 	"github.com/bitfield/go-r8"
 )
 
-func TestNewInitialisesCPU(t *testing.T) {
+func TestNew_InitialisesCPU(t *testing.T) {
 	t.Parallel()
 	cpu := r8.New()
 	if cpu.PC != 0 {
@@ -18,7 +18,7 @@ func TestNewInitialisesCPU(t *testing.T) {
 	}
 }
 
-func TestStepIncrementsPC(t *testing.T) {
+func TestStep_IncrementsPC(t *testing.T) {
 	t.Parallel()
 	cpu := r8.New()
 	cpu.Mem[0] = 1
@@ -31,8 +31,7 @@ func TestStepIncrementsPC(t *testing.T) {
 func TestRun_RunsUntilHalted(t *testing.T){
 	t.Parallel()
 	cpu := r8.New()
-	cpu.Mem[0], cpu.Mem[1] = 1,0
-	cpu.Run()
+	cpu.RunProgram([]byte{r8.NoOp, r8.Halt})
 	if cpu.PC != 2 {
 		t.Errorf("want pc == 2, got %d", cpu.PC)
 	}
