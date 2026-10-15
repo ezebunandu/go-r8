@@ -26,12 +26,16 @@ func TestStep_IncrementsPC(t *testing.T) {
 	if cpu.PC != 1 {
 		t.Errorf("want pc == 1, got %d", cpu.PC)
 	}
+	cpu.Step()
+	if cpu.PC != 2 {
+		t.Errorf("want pc == 2, got %d", cpu.PC)
+	}
 }
 
 func TestRun_RunsUntilHalted(t *testing.T){
 	t.Parallel()
 	cpu := r8.New()
-	cpu.RunProgram([]byte{r8.NoOp, r8.Halt})
+	cpu.RunProgram([]byte{r8.OpNOP, r8.OpHALT})
 	if cpu.PC != 2 {
 		t.Errorf("want pc == 2, got %d", cpu.PC)
 	}
@@ -41,7 +45,7 @@ func TestInc_IncrementsAccumulator(t *testing.T){
 	t.Parallel()
 	cpu := r8.New()
 	cpu.A = 0
-	cpu.RunProgram([]byte{r8.INCREMENT})
+	cpu.RunProgram([]byte{r8.OpINCREMENT})
 	if cpu.A != 1 {
 		t.Errorf("want accumulator to be 1, got %d", cpu.A)
 	}
@@ -51,7 +55,7 @@ func TestDec_DecrementsAccumulator(t *testing.T){
 	t.Parallel()
 	cpu := r8.New()
 	cpu.A = 1
-	cpu.RunProgram([]byte{r8.DECREMENT})
+	cpu.RunProgram([]byte{r8.OpDECREMENT})
 	if cpu.A != 0 {
 		t.Errorf("want accumulator to be , got %d", cpu.A)
 	}
@@ -61,7 +65,7 @@ func TestAccumulator_WrapsAroundIncrementFrom255To0(t *testing.T){
 	t.Parallel()
 	cpu := r8.New()
 	cpu.A = 255
-	cpu.RunProgram([]byte{r8.INCREMENT})
+	cpu.RunProgram([]byte{r8.OpINCREMENT})
 	if cpu.A != 0 {
 		t.Errorf("want accumulator to be 0, got %d", cpu.A)
 	}
@@ -71,7 +75,7 @@ func TestAccumulator_WrapsDecrementFrom0To255(t *testing.T){
 	t.Parallel()
 	cpu := r8.New()
 	cpu.A = 0
-	cpu.RunProgram([]byte{r8.DECREMENT})
+	cpu.RunProgram([]byte{r8.OpDECREMENT})
 	if cpu.A != 255 {
 		t.Errorf("want accumulator to be 255, got %d", cpu.A)
 	}
