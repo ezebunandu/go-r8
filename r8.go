@@ -7,10 +7,10 @@ type CPU struct {
 	Mem [65536]byte
 }
 
-const NoOp = 1
-const Halt = 0
-const INCREMENT = 48
-const DECREMENT = 64
+const OpNOP = 1
+const OpHALT = 0
+const OpINCREMENT = 48
+const OpDECREMENT = 64
 
 func New() *CPU {
 	return &CPU{}
@@ -24,12 +24,12 @@ func (cpu *CPU) RunProgram(prog []byte){
 func (cpu *CPU) Step() bool {
 	// Over to you to implement `Step`!
 	switch cpu.Mem[cpu.PC] {
-	case Halt:
+	case OpHALT:
 		cpu.PC++
 		return false
-	case INCREMENT:
+	case OpINCREMENT:
 		cpu.A++
-	case DECREMENT:
+	case OpDECREMENT:
 		cpu.A--
 	}
 	cpu.PC++
