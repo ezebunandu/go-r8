@@ -1,4 +1,4 @@
-module github.com/bitfield/go-r8
+module github.com/ezebunandu/go-r8
 
 go 1.21
 

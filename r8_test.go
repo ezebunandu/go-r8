@@ -3,7 +3,7 @@ package r8_test
 import (
 	"testing"
 
-	"github.com/bitfield/go-r8"
+	"github.com/ezebunandu/go-r8"
 	"github.com/google/go-cmp/cmp"
 )
 
@@ -100,5 +100,17 @@ func TestState_ReturnsCorrectStateAfterProgram(t *testing.T){
 	got := cpu.State()
 	if !cmp.Equal(want, got) {
 		t.Error(cmp.Diff(want, got))
+	}
+}
+
+func TestLoad_CopiesProgramIntoMemory(t *testing.T) {
+	t.Parallel()
+	cpu := r8.New()
+	cpu.Load([]byte{r8.OpINCREMENT, r8.OpHALT})
+	want := &r8.CPU{
+		Mem: [65536]byte{r8.OpINCREMENT, r8.OpHALT},
+	}
+	if !cmp.Equal(want, cpu) {
+		t.Error(cmp.Diff(want, cpu))
 	}
 }

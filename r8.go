@@ -19,7 +19,7 @@ func New() *CPU {
 }
 
 func (cpu *CPU) RunProgram(prog []byte) {
-	copy(cpu.Mem[:], prog)
+	cpu.Load(prog)
 	cpu.Run()
 }
 
@@ -44,4 +44,8 @@ func (cpu *CPU) Run() {
 
 func (cpu *CPU) State() string {
 	return fmt.Sprintf("PC=%v A=%v OP=%v", cpu.PC, cpu.A, cpu.Mem[cpu.PC])
+}
+
+func (cpu *CPU) Load(prog []byte) {
+	copy(cpu.Mem[:], prog)
 }
