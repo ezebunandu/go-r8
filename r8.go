@@ -1,6 +1,8 @@
 // Package r8 emulates a simple CPU called the R8.
 package r8
 
+import "fmt"
+
 type CPU struct {
 	A   byte
 	PC  uint16
@@ -16,13 +18,12 @@ func New() *CPU {
 	return &CPU{}
 }
 
-func (cpu *CPU) RunProgram(prog []byte){
+func (cpu *CPU) RunProgram(prog []byte) {
 	copy(cpu.Mem[:], prog)
 	cpu.Run()
 }
 
 func (cpu *CPU) Step() bool {
-	// Over to you to implement `Step`!
 	switch cpu.Mem[cpu.PC] {
 	case OpHALT:
 		cpu.PC++
@@ -39,4 +40,8 @@ func (cpu *CPU) Step() bool {
 func (cpu *CPU) Run() {
 	for cpu.Step() {
 	}
+}
+
+func (cpu *CPU) State() string {
+	return fmt.Sprintf("PC=%v A=%v OP=%v", cpu.PC, cpu.A, cpu.Mem[cpu.PC])
 }

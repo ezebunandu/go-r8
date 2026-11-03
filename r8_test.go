@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/bitfield/go-r8"
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestNew_InitialisesCPU(t *testing.T) {
@@ -78,5 +79,26 @@ func TestAccumulator_WrapsDecrementFrom0To255(t *testing.T){
 	cpu.RunProgram([]byte{r8.OpDECREMENT})
 	if cpu.A != 255 {
 		t.Errorf("want accumulator to be 255, got %d", cpu.A)
+	}
+}
+
+func TestState_ReturnsCorrectStateForNewCPU(t *testing.T){
+	t.Parallel()
+	cpu := r8.New()
+	want := "PC=0 A=0 OP=0"
+	got := cpu.State()
+	if !cmp.Equal(want, got) {
+		t.Error(cmp.Diff(want, got))
+	}
+}
+
+func TestState_ReturnsCorrectStateAfterProgram(t *testing.T){
+	t.Parallel()
+	cpu := r8.New()
+	cpu.RunProgram([]byte{r8.OpINCREMENT, r8.OpINCREMENT, r8.OpHALT})
+	want := "PC=3 A=2 OP=0"
+	got := cpu.State()
+	if !cmp.Equal(want, got) {
+		t.Error(cmp.Diff(want, got))
 	}
 }
